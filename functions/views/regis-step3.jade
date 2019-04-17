@@ -1,0 +1,18 @@
+doctype html
+head
+  title=title
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/comingsoon.css" rel="stylesheet")
+body
+  div.wrapper
+    if isRegistrationComplete
+      h1='Hi '+u_firstname+' '+u_lastname+", You've successfully registered!"
+      h3='Your ID is '+ userid
+      p='Class: ' + u_class + ' Roll: '+u_roll
+      br
+      br
+      h3 LightUptheProject
+      a(href='/') Home
+    else
+      h2 LightUptheProject
+      h3 Error!!

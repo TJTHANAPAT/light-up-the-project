@@ -1,0 +1,60 @@
+doctype html
+head
+  title=title
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/comingsoon.css" rel="stylesheet")
+body
+  div.wrapper
+    if isUserIDValid
+      h2 LightUptheProject
+      h3='Your ID is '+ userid
+      p='Class: ' + u_class + ' Roll: '+u_roll
+
+      form(action='/regis/step3', method='post')
+        input(type='text', name='userid', value=userid style='display:none;')
+        input(type='text', name='u_class', value=u_class style='display:none;')
+        input(type='text', name='u_roll', value=u_roll style='display:none;')
+        br
+        br
+        input(type='text', name='u_firstname', placeholder='Enter Your First Name', required, autofocus)
+        br
+        br
+        input(type='text', name='u_lastname', placeholder='Enter Your Last Name', required)
+        br
+        br
+        p Select your 4 interested booths.
+        input(type='checkbox', name='selection', value='G01', class='chklimit')
+        a Medicine
+        input(type='checkbox', name='selection', value='G02', class='chklimit')
+        a Dentistry
+        input(type='checkbox', name='selection', value='G03', class='chklimit')
+        a Veterinary
+        input(type='checkbox', name='selection', value='G04', class='chklimit')
+        a Pharmacy
+        input(type='checkbox', name='selection', value='G05', class='chklimit')
+        a Nursing
+        p Please check carefully again and click Register button.
+        br
+        input(type='submit', value='Register', onclick="if ($('.chklimit:input:checkbox:checked').length != 4){alert('You must select 4 choices.');return false;}")
+        br
+        br
+      a(href='/regis') Back
+
+      script(type='text/javascript')
+        |//Limit checkbox
+        |var max_limit = 4; // Max Limit
+        |$(document).ready(function (){
+        |  $(".chklimit:input:checkbox").each(function (index){
+        |      this.checked = (".chklimit:input:checkbox" < max_limit);
+        |  }).change(function (){
+        |      if ($(".chklimit:input:checkbox:checked").length > max_limit){
+        |          this.checked = false;
+        |          alert('You must select only 4 choices.')
+        |      }
+        |  });
+        |});
+    else
+      h2 LightUptheProject
+      h3='ID your provided '+ userid+ ' already exists.'
+      a(href='/regis') Back
+      script(src='/js/chkmaxlimit.js', type='text/javascript')

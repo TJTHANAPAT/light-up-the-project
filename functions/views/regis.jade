@@ -1,0 +1,19 @@
+doctype html
+head
+  title=title
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/comingsoon.css" rel="stylesheet")
+body
+  div.wrapper
+    h2 LightUptheProject
+    form(action='/regis/step2', method='post')
+      input(type='number', name='u_class', placeholder='Enter Your Class', min='1',  max='13', required, autofocus)
+      <br><br>
+      input(type='number', name='u_roll', placeholder='Enter Your Roll Number', min='1', max='50', required)
+      <br><br>
+      p Your ID is '18', following with your class and your roll number. For example, your class is '3', roll is '2'; your ID is '180302'.
+      input(type='text', name='userid', placeholder='Enter Your ID', required)
+      <br><br>
+      input(type='submit', value='Next')
+    br
+    a(href='/') Home
