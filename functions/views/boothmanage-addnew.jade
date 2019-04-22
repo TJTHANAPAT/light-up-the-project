@@ -1,0 +1,29 @@
+doctype HTML
+head
+  title=title
+  meta(name='viewport',content='width=device-width, initial-scale=1.0')
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/comingsoon.css" rel="stylesheet")
+body
+  div.wrapper
+    h2 Booth Management
+    if addNewBooth
+      p Fill the form below to add new booth.
+      form(action='/boothmanage/addnew', method='post')
+        p BoothID:
+        input(type='text', name='boothid', required, autofocus)
+        p BoothName:
+        input(type='text', name='boothname', required)
+        p BoothDescription:
+        input(type='text', name='boothdescription')
+        br
+        br
+        input(type='submit', value='Add')
+    else
+    if addNewBoothComplete
+      h3=boothname + ' has been added.'
+      a(href='/boothmanage/addnew') Add More Booth
+    br
+    a(href='/boothmanage') Booth Management
+    br
+    a(href='/') Home

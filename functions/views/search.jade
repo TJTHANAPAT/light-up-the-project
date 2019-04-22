@@ -9,6 +9,8 @@ body
     form(action='/search', method='post')
       p Enter Your ID:
       input(type='text', name='userid')
+      br
+      br
       input(type='submit', value='Search')
     if showSearchResult
       br
@@ -16,5 +18,5 @@ body
       p='UserID: ' + userid
       p='Name: ' + u_firstname + ' ' + u_lastname
       p='Class: ' + u_class + ' Roll: ' + u_roll
-    else
+    br
     a(href='/') Home

@@ -23,16 +23,12 @@ body
         br
         br
         p Select your 4 interested booths.
-        input(type='checkbox', name='selection', value='G01', class='chklimit')
-        a Medicine
-        input(type='checkbox', name='selection', value='G02', class='chklimit')
-        a Dentistry
-        input(type='checkbox', name='selection', value='G03', class='chklimit')
-        a Veterinary
-        input(type='checkbox', name='selection', value='G04', class='chklimit')
-        a Pharmacy
-        input(type='checkbox', name='selection', value='G05', class='chklimit')
-        a Nursing
+
+        each booth in booths
+          div.boothcheckbox
+            <input type='checkbox' name='selection' value= !{booth.boothid} class='chklimit'/>
+            a !{booth.boothname} !{booth.boothid}
+
         p Please check carefully again and click Register button.
         br
         input(type='submit', value='Register', onclick="if ($('.chklimit:input:checkbox:checked').length != 4){alert('You must select 4 choices.');return false;}")
@@ -57,4 +53,3 @@ body
       h2 LightUptheProject
       h3='ID your provided '+ userid+ ' already exists.'
       a(href='/regis') Back
-      script(src='/js/chkmaxlimit.js', type='text/javascript')

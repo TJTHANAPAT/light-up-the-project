@@ -1,0 +1,21 @@
+doctype HTML
+head
+  title=title
+  meta(name='viewport',content='width=device-width, initial-scale=1.0')
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/comingsoon.css" rel="stylesheet")
+body
+  div.wrapper
+    h1 Booth Management
+    br
+    each booth in booths
+      div(style='background-color: #c5f1e3;')
+        h2 !{booth.boothname}
+        h4 ID: !{booth.boothid}
+        p Round1: !{booth.round1} | Round2: !{booth.round2} | Round3: !{booth.round3} | Round4: !{booth.round4}
+        p Total: !{booth.boothtotal}
+      br
+
+    a(href='/boothmanage/addnew') Add new
+    br
+    a(href='/') Home

@@ -21,6 +21,7 @@ app.set('views','./views');
 require('./controllers/index.controller')(app);
 require('./controllers/search.controller')(app);
 require('./controllers/register.controller')(app);
+require('./controllers/boothmanagement.controller')(app);
 
 
 app.get('/timestamp', (request, response) => {
