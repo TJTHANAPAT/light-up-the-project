@@ -68,6 +68,7 @@ module.exports = function(app) {
                   boothname : req.body.boothname,
                   addNewBoothComplete: true
                 })
+                return null;
               })
 
             })
