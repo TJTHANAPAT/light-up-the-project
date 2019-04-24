@@ -21,14 +21,14 @@ module.exports = function(app) {
       return;
     }
 
+    var zero = '0'
+
     if (u_class < 10) {
-      var zero = '0'
       var u_class = zero.concat(u_class.toString())
     } else {
       var u_class = u_class.toString()
     }
     if (u_roll < 10) {
-      var zero = '0'
       var u_roll = zero.concat(u_roll.toString())
     } else {
       var u_roll = u_roll.toString()
@@ -134,9 +134,13 @@ module.exports = function(app) {
                   console.log('Matching')
                   db.collection('booths').doc(boothlist[j]).get()
                     .then(doc3 => {
+                      console.log(doc3.data().boothid)
                       var boothround = []
                       boothround.push(doc3.data().round1,doc3.data().round2,doc3.data().round3,doc3.data().round4)
                       var max = Math.max(...boothround)
+                      var min = Math.max(...boothround)
+                      console.log('Max: ',max)
+                      console.log('Min: ',min)
                     })
                   //db.collection('booths').doc(boothlist[j]).collection('round').add({
                   //  userid: userid

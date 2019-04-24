@@ -21,7 +21,11 @@ module.exports = function(app) {
           'title' : 'Booth Management',
           'booths': listofboothdetail,
         })
+        return null;
       })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
   });
 
   app.get('/boothmanage/addnew', function (req,res) {
@@ -67,6 +71,9 @@ module.exports = function(app) {
               })
 
             })
+            .catch(err => {
+              console.log('Error getting documents', err);
+            });
         })
       })
       .catch(err => {
