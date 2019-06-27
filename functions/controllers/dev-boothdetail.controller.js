@@ -2,7 +2,7 @@ module.exports = function(app) {
 
   const admin = require('firebase-admin');
 
-  app.get('/dev/boothdetail', function (req, res) {
+  app.get('/boothdetail', function (req, res) {
     var db = admin.firestore();
     var boothsRef = db.collection('booths').where('booth','==',true)
     boothsRef.get()
@@ -26,7 +26,7 @@ module.exports = function(app) {
       })
   });
 
-  app.post('/dev/boothdetail', function (req, res) {
+  app.post('/boothdetail', function (req, res) {
     var db = admin.firestore();
     var boothsRef = db.collection('booths');
 

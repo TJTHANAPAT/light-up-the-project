@@ -4,7 +4,6 @@ html,body {
   font-family: 'Prompt', sans-serif;
 }
 
-
 select:required:invalid {
   color: gray;
 }

@@ -28,13 +28,4 @@ require('./controllers/randomround.controller')(app);
 require('./controllers/dev-boothdetail.controller')(app);
 
 
-app.get('/timestamp', (request, response) => {
-  response.send(`${Date.now()}`);
-});
-
-app.get('/timestamp-cached', (request, response) => {
-  response.set('Cache-Control', 'public, max-age=3000, s-maxage=6000');
-  response.send(`${Date.now()}`);
-});
-
 exports.app = functions.https.onRequest(app);

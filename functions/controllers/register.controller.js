@@ -1,5 +1,5 @@
 module.exports = function(app) {
-
+/*
   const admin = require('firebase-admin');
 
   app.get('/regis', function (req, res) {
@@ -157,5 +157,5 @@ module.exports = function(app) {
   });
 
 
-
+*/
 };

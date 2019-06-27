@@ -5,7 +5,7 @@ module.exports = function(app) {
   app.get('/search', function (req, res) {
     res.set('Cache-Control', 'public, max-age=3000, s-maxage=6000');
     res.render('search', {
-      'title' : 'Search'
+      'title' : 'Search - LightUpTheProject'
     })
   });
 
@@ -19,7 +19,7 @@ module.exports = function(app) {
           return;
         } else {
           res.render('search', {
-            title : 'Search',
+            title : 'Search - LightUpTheProject',
             showSearchResult: true,
             userid: doc.data().userid,
             u_firstname: doc.data().u_firstname,
@@ -28,6 +28,7 @@ module.exports = function(app) {
             u_roll: doc.data().u_roll
           })
         }
+        return null;
       })
       .catch(err => {
         console.log('Error getting documents', err);

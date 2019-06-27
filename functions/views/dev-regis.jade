@@ -1,43 +1,71 @@
 doctype html
 head
   title=title
+  meta(name='viewport',content='width=device-width, initial-scale=1.0')
   link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
-  link(href="/css/comingsoon.css" rel="stylesheet")
+  link(href="/css/lightup.css" rel="stylesheet")
+  link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
 body
-  div.wrapper
-    h2 LightUptheProject
+  div.container(style='max-width:800px;')
+    h2(style="margin-top:100px;") LightUptheProject
 
     if isRegis
-      form(action='/dev/randomround' method='post')
-        p UserID:
-        input(type='text' name='userid' required)
-        p Class:
-        input(type='text' name='u_class' value='1')
-        p Roll:
-        input(type='text' name='u_roll')
-        p First Name:
-        input(type='text' name='u_firstname' placeholder='Enter Your First Name' value='DevMode')
-        p Last Name:
-        input(type='text' name='u_lastname' placeholder='Enter Your Last Name' value='DevMode')
+
+      form(action='/regis/randomround' method='post')
+        br
+        div.form-group
+          label Class:
+          select(class="form-control" name='u_class', required)
+            option(value='', disabled, selected) Select your class...
+            option(value='01') 01
+            option(value='02') 02
+            option(value='03') 03
+            option(value='04') 04
+            option(value='05') 05
+            option(value='06') 06
+            option(value='07') 07
+            option(value='08') 08
+            option(value='09') 09
+            option(value='10') 10
+            option(value='11') 11
+            option(value='12') 12
+            option(value='13') 13
+        div.form-group
+          label Roll:
+          input(type='number' name='u_roll' class='form-control' placeholder='Enter Your Roll' required)
+        div.form-group
+          label First Name:
+          input(type='text' name='u_firstname' class='form-control' placeholder='Enter Your First Name' required)
+        div.form-group
+          label Last Name:
+          input(type='text' name='u_lastname' class='form-control' placeholder='Enter Your First Name' required)
         br
         br
-        p Select your 4 interested booths.
+        p Select 4 booths which you'd like to attend.
 
         each booth in booths
-          div.boothcheckbox
-            <input type='checkbox' name='selection' value= !{booth.boothid} class='chklimit'/>
-            a !{booth.boothname} !{booth.boothid}
+          div.form-check
+            <input type='checkbox' name='selection' value= !{booth.boothid} id = !{booth.boothid} class='chklimit'/>
+            <label class='form-check-label' for=!{booth.boothid}> &nbsp;&nbsp;  !{booth.boothid} - !{booth.boothname} </label>
 
-        p Please check carefully again and click Register button.
         br
-        input(type='submit', value='Register', onclick="if ($('.chklimit:input:checkbox:checked').length != 4){alert('You must select 4 choices.');return false;}")
+        p Please check carefully again and click Register button below.
+        br
+        input(type='submit' class='btn btn-primary' value='Register' onclick="if ($('.chklimit:input:checkbox:checked').length != 4){alert('You must select 4 choices.');return false;}")
     if isRegisSuccess
-      h3= 'UserID: ' + userid
-      h3= u_firstname + ' ' + u_lastname + ' Class: ' + u_class +' Roll: '+ u_roll
+      br
+      br
+      h4= 'Your UserID: ' + userid
+      h5= 'Name: ' + u_firstname + ' ' + u_lastname + ' Class: ' + u_class +' Roll: '+ u_roll
+      hr
       p= 'Round1: ' + round1
       p= 'Round2: ' + round2
       p= 'Round3: ' + round3
       p= 'Round4: ' + round4
     br
     br
-    a(href='/dev/regis') Home
+    a(href='/') Home
+    hr
+    p LightUpTheProject &copy; 2019 | Created by TJ.THANAPAT
+    br
+    br
