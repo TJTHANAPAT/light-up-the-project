@@ -1,0 +1,90 @@
+doctype html
+head
+  title=title
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/lightup_boothdetail.css" rel="stylesheet")
+  link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
+body
+  div.container
+    h2(style="margin-top:100px;") LightUptheProject
+    br
+    form(action='/dev/boothdetail', method='post')
+        p Select Booth
+        div.chooseteam
+          select(name='selectedbooth', required)
+            option(value='', disabled, selected) Choose...
+            each booth in booths
+              option(value=booth.boothid) !{booth.boothname}
+        br
+        input(type='submit' value='Search')
+    if queryBoothDetail
+      br
+      br
+      div
+        h3= 'Round1 (' + round1val + ')'
+        table(class='table table-hover')
+          thead
+            tr
+              td(scope='col') <b>UserID</b>
+              td(scope='col') <b>Full Name</b>
+              td(scope='col') <b>Class</b>
+              td(scope='col') <b>Roll</b>
+          tbody
+            each user in BoothRound1
+              tr
+                td !{user.userid}
+                td !{user.u_firstname} !{user.u_lastname}
+                td !{user.u_class}
+                td !{user.u_roll}
+        h3= 'Round2 (' + round2val + ')'
+        table(class='table table-hover')
+          thead
+            tr
+              td(scope='col') <b>UserID</b>
+              td(scope='col') <b>Full Name</b>
+              td(scope='col') <b>Class</b>
+              td(scope='col') <b>Roll</b>
+          tbody
+            each user in BoothRound2
+              tr
+                td !{user.userid}
+                td !{user.u_firstname} !{user.u_lastname}
+                td !{user.u_class}
+                td !{user.u_roll}
+        h3= 'Round3 (' + round3val + ')'
+        table(class='table table-hover')
+          thead
+            tr
+              td(scope='col') <b>UserID</b>
+              td(scope='col') <b>Full Name</b>
+              td(scope='col') <b>Class</b>
+              td(scope='col') <b>Roll</b>
+          tbody
+            each user in BoothRound3
+              tr
+                td !{user.userid}
+                td !{user.u_firstname} !{user.u_lastname}
+                td !{user.u_class}
+                td !{user.u_roll}
+        h3= 'Round4 (' + round4val + ')'
+        table(class='table table-hover')
+          thead
+            tr
+              td(scope='col') <b>UserID</b>
+              td(scope='col') <b>Full Name</b>
+              td(scope='col') <b>Class</b>
+              td(scope='col') <b>Roll</b>
+          tbody
+            each user in BoothRound4
+              tr
+                td !{user.userid}
+                td !{user.u_firstname} !{user.u_lastname}
+                td !{user.u_class}
+                td !{user.u_roll}
+        br
+        h3= 'Total: ' + boothtotal
+    br
+    br
+    a(href='/') Home
+    br
+    br

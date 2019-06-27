@@ -13,8 +13,8 @@ module.exports = function(app) {
     res.set('Cache-Control', 'public, max-age=3000, s-maxage=6000');
     var db = admin.firestore();
 
-    u_class = req.body.u_class
-    u_roll = req.body.u_roll
+    var u_class = req.body.u_class
+    var u_roll = req.body.u_roll
     if ((u_roll > 45 || u_roll < 1 ) || (u_class > 13 || u_class < 1)) {
       res.send('Your class or roll is incorrect!')
       console.log('Error')

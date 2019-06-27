@@ -1,7 +1,6 @@
-const admin = require('firebase-admin');
-
 module.exports = function(app) {
 
+  const admin = require('firebase-admin');
 
   app.get('/boothmanage', function (req,res) {
     var db = admin.firestore();
@@ -55,27 +54,35 @@ module.exports = function(app) {
           round3:0,
           round4:0,
           boothtotal:0
-        }).then(ref => {
-          boothsRef.doc('boothlist').get()
-            .then(boothlist => {
-              list = boothlist.data().list
-              list.push(req.body.boothid)
-              boothsRef.doc('boothlist').set({
-                list:list
-              }).then(ref => {
-                res.render('boothmanage-addnew',{
-                  title : 'Add New Booth',
-                  boothname : req.body.boothname,
-                  addNewBoothComplete: true
-                })
+        })
+          .then(ref => {
+            boothsRef.doc('boothlist').get()
+              .then(boothlist => {
+                list = boothlist.data().list
+                list.push(req.body.boothid)
+                boothsRef.doc('boothlist').set({list:list},{merge: true})
+                  .then(ref => {
+                    res.render('boothmanage-addnew',{
+                      title : 'Add New Booth',
+                      boothname : req.body.boothname,
+                      addNewBoothComplete: true
+                    })
+                    return null;
+                  })
+                  .catch(err => {
+                    console.log('Error getting documents', err);
+                  });
                 return null;
               })
-
-            })
-            .catch(err => {
+              .catch(err => {
+                console.log('Error getting documents', err);
+              });
+            return null;
+          })
+          .catch(err => {
               console.log('Error getting documents', err);
-            });
-        })
+          });
+        return null;
       })
       .catch(err => {
         console.log('Error getting documents', err);

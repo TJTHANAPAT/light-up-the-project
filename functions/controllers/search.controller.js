@@ -19,13 +19,13 @@ module.exports = function(app) {
           return;
         } else {
           res.render('search', {
-            'title' : 'Search',
-            'showSearchResult' : true,
-            'userid' : doc.data().userid,
-            'u_firstname' : doc.data().u_firstname,
-            'u_lastname' : doc.data().u_lastname,
-            'u_class' : doc.data().u_class,
-            'u_roll' : doc.data().u_roll
+            title : 'Search',
+            showSearchResult: true,
+            userid: doc.data().userid,
+            u_firstname: doc.data().u_firstname,
+            u_lastname: doc.data().u_lastname,
+            u_class: doc.data().u_class,
+            u_roll: doc.data().u_roll
           })
         }
       })

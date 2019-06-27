@@ -23,6 +23,10 @@ require('./controllers/search.controller')(app);
 require('./controllers/register.controller')(app);
 require('./controllers/boothmanagement.controller')(app);
 
+require('./controllers/dev-register.controller')(app);
+require('./controllers/randomround.controller')(app);
+require('./controllers/dev-boothdetail.controller')(app);
+
 
 app.get('/timestamp', (request, response) => {
   response.send(`${Date.now()}`);

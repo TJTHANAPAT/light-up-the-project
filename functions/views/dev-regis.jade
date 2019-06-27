@@ -1,0 +1,43 @@
+doctype html
+head
+  title=title
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(href="/css/comingsoon.css" rel="stylesheet")
+body
+  div.wrapper
+    h2 LightUptheProject
+
+    if isRegis
+      form(action='/dev/randomround' method='post')
+        p UserID:
+        input(type='text' name='userid' required)
+        p Class:
+        input(type='text' name='u_class' value='1')
+        p Roll:
+        input(type='text' name='u_roll')
+        p First Name:
+        input(type='text' name='u_firstname' placeholder='Enter Your First Name' value='DevMode')
+        p Last Name:
+        input(type='text' name='u_lastname' placeholder='Enter Your Last Name' value='DevMode')
+        br
+        br
+        p Select your 4 interested booths.
+
+        each booth in booths
+          div.boothcheckbox
+            <input type='checkbox' name='selection' value= !{booth.boothid} class='chklimit'/>
+            a !{booth.boothname} !{booth.boothid}
+
+        p Please check carefully again and click Register button.
+        br
+        input(type='submit', value='Register', onclick="if ($('.chklimit:input:checkbox:checked').length != 4){alert('You must select 4 choices.');return false;}")
+    if isRegisSuccess
+      h3= 'UserID: ' + userid
+      h3= u_firstname + ' ' + u_lastname + ' Class: ' + u_class +' Roll: '+ u_roll
+      p= 'Round1: ' + round1
+      p= 'Round2: ' + round2
+      p= 'Round3: ' + round3
+      p= 'Round4: ' + round4
+    br
+    br
+    a(href='/dev/regis') Home
