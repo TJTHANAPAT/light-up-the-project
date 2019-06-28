@@ -1,7 +1,12 @@
+@import url(https://fonts.googleapis.com/css?family=Prompt:300,400,500);
+
 html,body {
   padding: 0;
   margin: 0;
-  font-family: 'Prompt', sans-serif;
+}
+
+body {
+  font-family: 'Prompt', sans-serif !important;
 }
 
 select:required:invalid {

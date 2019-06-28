@@ -25,7 +25,11 @@ module.exports = function(app) {
             u_firstname: doc.data().u_firstname,
             u_lastname: doc.data().u_lastname,
             u_class: doc.data().u_class,
-            u_roll: doc.data().u_roll
+            u_roll: doc.data().u_roll,
+            u_round1: doc.data().u_round1,
+            u_round2: doc.data().u_round2,
+            u_round3: doc.data().u_round3,
+            u_round4: doc.data().u_round4
           })
         }
         return null;

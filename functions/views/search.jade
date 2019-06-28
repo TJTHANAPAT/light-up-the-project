@@ -2,22 +2,34 @@ doctype html
 head
   title=title
   meta(name='viewport',content='width=device-width, initial-scale=1.0')
+  link(rel="icon" type="image/png" href="/img/LightUpTheProjectFav.png")
   link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
   link(href="/css/lightup.css" rel="stylesheet")
   link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
 body
   div.container(style='max-width:800px;')
+    h2(style="margin-top:100px;") LightUptheProject
     form(action='/search', method='post')
-      p Enter Your ID:
-      input(type='text', name='userid')
-      br
-      br
-      input(type='submit', value='Search')
+      div.form-group
+        label กรอก UserID
+        input(type='text' class='form-control' name='userid' placeholder='UserID')
+      input(type='submit' class='btn btn-primary' value='Search')
     if showSearchResult
       br
+      br
       h3 Result
-      p='UserID: ' + userid
-      p='Name: ' + u_firstname + ' ' + u_lastname
-      p='Class: ' + u_class + ' Roll: ' + u_roll
+      h4= 'Your UserID: ' + userid
+      h5= 'ชื่อ-นามสุกล: ' + u_firstname + ' ' + u_lastname
+      h5= 'ห้อง: ' + u_class +' เลขที่: '+ u_roll
+      hr
+      p= 'Round1: ' + u_round1
+      p= 'Round2: ' + u_round2
+      p= 'Round3: ' + u_round3
+      p= 'Round4: ' + u_round4
+    br
     br
     a(href='/') Home
+    hr
+    p LightUpTheProject &copy; 2019 | Created by TJ.THANAPAT
+    br
+    br

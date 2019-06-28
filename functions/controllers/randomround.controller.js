@@ -496,10 +496,10 @@ module.exports = function(app) {
                             u_lastname:u_lastname,
                             u_class:u_class,
                             u_roll:u_roll,
-                            round1: ListUserBoothSorted[0],
-                            round2: ListUserBoothSorted[1],
-                            round3: ListUserBoothSorted[2],
-                            round4: ListUserBoothSorted[3],
+                            u_round1: ListUserBoothSorted[0],
+                            u_round2: ListUserBoothSorted[1],
+                            u_round3: ListUserBoothSorted[2],
+                            u_round4: ListUserBoothSorted[3],
                           })
 
 

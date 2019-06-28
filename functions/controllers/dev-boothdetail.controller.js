@@ -74,6 +74,8 @@ module.exports = function(app) {
                               BoothRound2: BoothRound2,
                               BoothRound3: BoothRound3,
                               BoothRound4: BoothRound4,
+                              boothname: docBooth.data().boothname,
+                              boothid: docBooth.data().boothid,
                               round1val: docBooth.data().round1,
                               round2val: docBooth.data().round2,
                               round3val: docBooth.data().round3,

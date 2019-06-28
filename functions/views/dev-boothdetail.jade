@@ -2,8 +2,9 @@ doctype html
 head
   title=title
   meta(name='viewport',content='width=device-width, initial-scale=1.0')
-  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
+  link(rel="icon" type="image/png" href="/img/LightUpTheProjectFav.png")
   link(href="/css/lightup.css" rel="stylesheet")
+  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
   link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
 body
   div.container(style='max-width:800px;')
@@ -21,8 +22,11 @@ body
         input(type='submit' class='btn btn-primary' value='Search')
     if queryBoothDetail
       br
+      hr
       br
       div
+        h2= boothname
+        br
         h3= 'Round1 (' + round1val + ')'
         table(class='table table-hover')
           thead
