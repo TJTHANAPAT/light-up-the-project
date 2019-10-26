@@ -2,20 +2,37 @@ doctype HTML
 head
   title=title
   meta(name='viewport',content='width=device-width, initial-scale=1.0')
-  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
-  link(href="/css/comingsoon.css" rel="stylesheet")
-body
-  div.wrapper
-    h1 Booth Management
+  link(rel="icon" type="image/png" href="/img/LightUpTheProjectFav.png")
+  link(href="/css/lightup.css" rel="stylesheet")
+  link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
+  link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css")
+body.lightup-admin
+  div.container.fluid(style='max-width:1500px;')
+    h2.lightup-admin-text(style="margin-top:100px;") LightUptheProject | Booth Management
     br
-    each booth in booths
-      div(style='background-color: #c5f1e3;')
-        h2 !{booth.boothname}
-        h4 ID: !{booth.boothid}
-        p Round1: !{booth.round1} | Round2: !{booth.round2} | Round3: !{booth.round3} | Round4: !{booth.round4}
-        p Total: !{booth.boothtotal}
-      br
+    div.row
+      each booth in booths
+        div.col-md-4.lightup-admin-booth-container
+          div.lightup-admin-booth
+            h3.lightup-admin-text.mt-3 !{booth.boothname}
+            h4.lightup-admin-text ID: !{booth.boothid}
+            p.lightup-admin-text Round1: !{booth.round1} | Round2: !{booth.round2} | Round3: !{booth.round3} | Round4: !{booth.round4}
+            p.lightup-admin-text Total: !{booth.boothtotal}
+      div.col-md-4.lightup-admin-booth-container
+        a(href='/admin/boothmanage/addnew')
+          div.lightup-admin-booth
+            div.lightup-admin-booth-add-container
+              div.lightup-admin-booth-add-vertical-center
+                i(class='fas fa-plus-circle fa-2x lightup-admin-booth-icon')
+                p.lightup-admin-text.m-0 Add New Booth
 
-    a(href='/boothmanage/addnew') Add new
+
     br
-    a(href='/') Home
+    br
+    div.text-center
+      a(href='/' class='btn btn-outline-light px-5' role='button') Home
+    br
+    br
+    p.lightup-admin-text LightUpTheProject &copy; 2019 | Created by TJ.THANAPAT
+    br
+    br

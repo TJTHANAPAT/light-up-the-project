@@ -2,23 +2,27 @@ module.exports = function(app) {
 
   const admin = require('firebase-admin');
 
-  app.get('/search', function (req, res) {
+  app.get('/search/user', function (req, res) {
     res.set('Cache-Control', 'public, max-age=3000, s-maxage=6000');
-    res.render('search', {
+    res.render('search_user', {
       'title' : 'Search - LightUpTheProject'
     })
   });
 
-  app.post('/search', function (req, res) {
+  app.post('/search/user', function (req, res) {
     var db = admin.firestore();
     db.collection('users').doc(req.body.userid).get()
       .then(doc => {
         if (!doc.exists) {
           console.log('No matching documents.');
-          res.send('No matching doc.');
+          res.render('search_user', {
+            title: 'Search - LightUpTheProject',
+            showSearchError: true,
+            ErrMessage: 'Error: ไม่พบ UserID: ' + req.body.userid + ' ที่คุณกรอกในฐานข้อมูล'
+          })
           return;
         } else {
-          res.render('search', {
+          res.render('search_user', {
             title : 'Search - LightUpTheProject',
             showSearchResult: true,
             userid: doc.data().userid,

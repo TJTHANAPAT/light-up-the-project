@@ -1,19 +1,45 @@
 doctype html
-html
+html.lightup-index
   head
     title จุดประกายฝัน 2562
     meta(name='viewport',content='width=device-width, initial-scale=1.0')
     link(rel="icon" type="image/png" href="/img/LightUpTheProjectFav.png")
-    link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
-    link(href="/css/comingsoon.css" rel="stylesheet")
+    link(href="/css/lightup.css" rel="stylesheet")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css")
+    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
   body
-    div.wrapper-home
-      a(style='font-size:6.3vw;font-weight:400;') จุดประกายฝัน 2562
-      a(class="tag") BETA
+    div.container-fluid(style='max-width:1020px;')
+      div(style='text-align: center;')
+        h1(style='margin-top:120px;font-size:50px;font-weight:400;') จุดประกายฝัน 2562
+        a(class="tag") BETA
+        br
+        br
+        br
+      div.row
+        dd
+        div.col-md.lightup-index-menu-container.text-center
+          a(href='/regis')
+            div.lightup-index-menu
+              i(class='fas fa-4x fa-edit lightup-index-menu-icon')
+              p.lightup-index-menu Register
+        div.col-md.lightup-index-menu-container.text-center
+          a(href='/search/user')
+            div.lightup-index-menu
+              i(class='fas fa-4x fa-user lightup-index-menu-icon')
+              p.lightup-index-menu Search User
+        div.col-md.lightup-index-menu-container.text-center
+          a(href='/search/class')
+            div.lightup-index-menu
+              i(class='fas fa-4x fa-file-alt lightup-index-menu-icon')
+              p.lightup-index-menu Search Class
+        div.col-md.lightup-index-menu-container.text-center
+          a(href='/boothdetail')
+            div.lightup-index-menu
+              i(class='fas fa-4x fa-folder-open lightup-index-menu-icon')
+              p.lightup-index-menu Booths
       br
-      a(style='font-size:20px;')
       br
       br
-      a(href='/regis' class='tag') Register
-      a(href='/search' class='tag') Search
-      a(href='/boothdetail' class='tag') Booths
+      hr
+      p LightUpTheProject &copy; 2019 | Created by TJ.THANAPAT
+      br

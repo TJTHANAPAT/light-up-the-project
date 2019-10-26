@@ -8,15 +8,18 @@ module.exports = function(app) {
     boothsRef.get()
       .then(snapshot => {
         if (snapshot.empty) {
-          res.send('Error: No booth to select')
+          res.render('error',{
+            title:'Error - LightUpTheProject',
+            ErrMessage: 'Error: No booth is found in database.'
+          });
           return;
         }
         var listofboothdetail = [];
         snapshot.forEach(doc => {
           listofboothdetail.push(doc.data())
         });
-        res.render('dev-boothdetail',{
-          title: 'Booth Details',
+        res.render('boothdetail',{
+          title: 'Booth Details - LightUpTheProject',
           booths: listofboothdetail
         })
         return null;
@@ -33,7 +36,10 @@ module.exports = function(app) {
     boothsRef.where('booth','==',true).get()
       .then(snapshot => {
         if (snapshot.empty) {
-          res.send('Error: No booth to select')
+          res.render('error',{
+            title:'Error - LightUpTheProject',
+            ErrMessage: 'Error: No booth is found in database.'
+          });
           return;
         }
         var listofboothdetail = [];
@@ -66,8 +72,8 @@ module.exports = function(app) {
                         });
                         boothsRef.doc(req.body.selectedbooth).get()
                           .then(docBooth => {
-                            res.render('dev-boothdetail',{
-                              title: 'Booth Details',
+                            res.render('boothdetail',{
+                              title: 'Booth Details - LightUpTheProject',
                               booths: listofboothdetail,
                               queryBoothDetail: true,
                               BoothRound1: BoothRound1,

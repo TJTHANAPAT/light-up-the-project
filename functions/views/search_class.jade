@@ -1,0 +1,64 @@
+doctype html
+head
+  title=title
+  meta(name='viewport',content='width=device-width, initial-scale=1.0')
+  link(rel="icon" type="image/png" href="/img/LightUpTheProjectFav.png")
+  link(href="/css/lightup.css" rel="stylesheet")
+  link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
+body
+  div.container-fluid(style='max-width:1020px;')
+    h2(style="margin-top:100px;") LightUptheProject
+    form(action='/search/class', method='post')
+      br
+      div.form-group
+        label เลือกห้องเรียนที่คุณต้องการดูข้อมูล
+        select(class="form-control" name='u_class' required)
+          option(value='', disabled, selected) เลือก...
+          option(value='01') 01
+          option(value='02') 02
+          option(value='03') 03
+          option(value='04') 04
+          option(value='05') 05
+          option(value='06') 06
+          option(value='07') 07
+          option(value='08') 08
+          option(value='09') 09
+          option(value='10') 10
+          option(value='11') 11
+          option(value='12') 12
+          option(value='13') 13
+      input(type='submit' class='btn btn-primary' value='Search')
+    br
+    if showSearchResult
+      hr
+      br
+      h3= 'Class ' + u_class
+      table(class='table table-hover')
+        thead
+          tr
+            td(scope='col') <b>Roll</b>
+            td(scope='col') <b>UserID</b>
+            td(scope='col') <b>Full Name</b>
+            td(scope='col') <b>Round1</b>
+            td(scope='col') <b>Round2</b>
+            td(scope='col') <b>Round3</b>
+            td(scope='col') <b>Round4</b>
+        tbody
+          each user in users
+            tr
+              td !{user.u_roll}
+              td !{user.userid}
+              td !{user.u_firstname} !{user.u_lastname}
+              td !{user.u_round1}
+              td !{user.u_round2}
+              td !{user.u_round3}
+              td !{user.u_round4}
+    if showSearchError
+      p(style='color: red;')=ErrMessage
+    br
+    br
+    a(href='/') Home
+    hr
+    p LightUpTheProject &copy; 2019 | Created by TJ.THANAPAT
+    br
+    br

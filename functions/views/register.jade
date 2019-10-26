@@ -4,10 +4,9 @@ head
   meta(name='viewport',content='width=device-width, initial-scale=1.0')
   link(rel="icon" type="image/png" href="/img/LightUpTheProjectFav.png")
   link(href="/css/lightup.css" rel="stylesheet")
-  link(href="https://fonts.googleapis.com/css?family=Prompt:300,400,500" rel="stylesheet")
   link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
 body
-  div.container(style='max-width:800px;')
+  div.container-fluid(style='max-width:800px;')
     h2(style="margin-top:100px;") LightUptheProject
 
     if isRegis
@@ -41,8 +40,8 @@ body
           label ชื่อจริง:
           input(type='text' name='u_firstname' class='form-control' placeholder='ชื่อจริง' required)
         div.form-group
-          label นามสุกล:
-          input(type='text' name='u_lastname' class='form-control' placeholder='นามสุกล' required)
+          label นามสกุล:
+          input(type='text' name='u_lastname' class='form-control' placeholder='นามสกุล' required)
         br
         br
         p เลือก 4 ตัวเลือกที่คุณสนใจเท่านั้น
@@ -50,7 +49,7 @@ body
         each booth in booths
           div.form-check
             <input type='checkbox' name='selection' value= !{booth.boothid} id = !{booth.boothid} class='chklimit'/>
-            <label class='form-check-label' for=!{booth.boothid}> &nbsp;&nbsp;  !{booth.boothid} - !{booth.boothname} </label>
+            <label class='form-check-label' for=!{booth.boothid}> &nbsp;!{booth.boothname} </label>
 
         br
         p กรุณาตรวจสอบอีกครั้งก่อนกดลงทะเบียน

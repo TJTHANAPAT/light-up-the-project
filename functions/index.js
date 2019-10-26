@@ -19,13 +19,14 @@ app.set('view engine', 'jade')
 app.set('views','./views');
 
 require('./controllers/index.controller')(app);
-require('./controllers/search.controller')(app);
 require('./controllers/register.controller')(app);
-require('./controllers/boothmanagement.controller')(app);
-
-require('./controllers/dev-register.controller')(app);
 require('./controllers/randomround.controller')(app);
-require('./controllers/dev-boothdetail.controller')(app);
+require('./controllers/boothmanagement.controller')(app);
+require('./controllers/search_user.controller')(app);
+require('./controllers/search_class.controller')(app);
+require('./controllers/boothdetail.controller')(app);
+require('./controllers/deleteuser.controller')(app);
+require('./controllers/config.controller')(app);
 
 
 exports.app = functions.https.onRequest(app);

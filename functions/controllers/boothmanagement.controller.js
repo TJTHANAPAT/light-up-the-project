@@ -2,14 +2,17 @@ module.exports = function(app) {
 
   const admin = require('firebase-admin');
 
-  app.get('/boothmanage', function (req,res) {
+  app.get('/admin/boothmanage', function (req,res) {
     var db = admin.firestore();
     var boothsRef = db.collection('booths').where('booth','==',true);
     boothsRef.get()
       .then(snapshot => {
         if (snapshot.empty) {
           console.log('No matching documents.');
-          res.send('No matching documents.')
+          res.render('error',{
+            title:'Error - LightUpTheProject',
+            ErrMessage: 'Error: No booth is found in database. To Add new booth, visit /admin/boothmanage/addnew'
+          });
           return;
         }
         var listofboothdetail = [];
@@ -17,7 +20,7 @@ module.exports = function(app) {
           listofboothdetail.push(doc.data())
         });
         res.render('boothmanage-index',{
-          'title' : 'Booth Management',
+          'title' : 'Booth Management - LightUpTheProject',
           'booths': listofboothdetail,
         })
         return null;
@@ -27,21 +30,25 @@ module.exports = function(app) {
       });
   });
 
-  app.get('/boothmanage/addnew', function (req,res) {
+  app.get('/admin/boothmanage/addnew', function (req,res) {
     res.render('boothmanage-addnew',{
-      'title' : 'Add New Booth',
+      'title' : 'Booth Management - LightUpTheProject',
       addNewBooth: true
     })
   });
 
-  app.post('/boothmanage/addnew', function (req,res) {
+  app.post('/admin/boothmanage/addnew', function (req,res) {
     var db = admin.firestore();
     var boothsRef = db.collection('booths');
     boothsRef.doc(req.body.boothid).get()
       .then(doc => {
         if (doc.exists) {
-          console.log(req.body.boothid + ' alreay exists!')
-          res.send('This ID already exists.')
+          console.log(req.body.boothid + ' already exists!')
+          res.render('error',{
+            title:'Error - LightUpTheProject',
+            ErrMessage: 'Error: ' + req.body.boothid + ' already exists!',
+            showBackButton: true
+          });
           return;
         }
         boothsRef.doc(req.body.boothid).set({
@@ -56,36 +63,20 @@ module.exports = function(app) {
           boothtotal:0
         })
           .then(ref => {
-            boothsRef.doc('boothlist').get()
-              .then(boothlist => {
-                list = boothlist.data().list
-                list.push(req.body.boothid)
-                boothsRef.doc('boothlist').set({list:list},{merge: true})
-                  .then(ref => {
-                    res.render('boothmanage-addnew',{
-                      title : 'Add New Booth',
-                      boothname : req.body.boothname,
-                      addNewBoothComplete: true
-                    })
-                    return null;
-                  })
-                  .catch(err => {
-                    console.log('Error getting documents', err);
-                  });
-                return null;
-              })
-              .catch(err => {
-                console.log('Error getting documents', err);
-              });
+            res.render('boothmanage-addnew',{
+              title : 'Booth Management - LightUpTheProject',
+              boothname : req.body.boothname,
+              addNewBoothComplete: true
+            });
             return null;
           })
           .catch(err => {
-              console.log('Error getting documents', err);
+              console.log('Error ', err);
           });
         return null;
       })
       .catch(err => {
-        console.log('Error getting documents', err);
+        console.log('Error ', err);
       });
   });
 };

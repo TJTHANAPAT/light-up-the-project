@@ -84,17 +84,20 @@ module.exports = function(app) {
     let year = '19';
 
     if ( selectedBooth.length !== 4 ){
-      res.send('You must select 4 booths');
-      throw new Error("More than or less than 4 booths are selected. User must select 4 booths.");
-    }
-
-    if ( selectedBooth.length !== 4 ){
-      res.send('You must select 4 booths');
+      res.render('error',{
+        title:'Error - LightUpTheProject',
+        ErrMessage: 'Error: คุณต้องเลือก 4 ตัวเลือกเท่านั้น | More than or less than 4 booths are selected. User must select 4 booths.',
+        showBackButton: true
+      });
       throw new Error("More than or less than 4 booths are selected. User must select 4 booths.");
     }
 
     if ((u_roll < 1) || (u_roll > 60)){
-      res.send('Your input roll is out of range.');
+      res.render('error',{
+        title:'Error - LightUpTheProject',
+        ErrMessage: 'Error: Input roll is out of range.',
+        showBackButton: true
+      });
       throw new Error("Input roll is out of range.");
     }
 
@@ -111,7 +114,11 @@ module.exports = function(app) {
     usersRef.doc(userid).get()
       .then(doc =>{
         if (doc.exists) {
-          res.send('This User is alreay existed.')
+          var ErrMessage = 'Error: ไม่สามารถทำการลงทะเบียนได้ เนื่องจากพบข้อมูลของผู้ใช้เลขที่ ' + req.body.u_roll + ' ห้อง ' + req.body.u_class + ' ในฐานข้อมูล ตรวจสอบข้อมูลของผู้ใช้ดังกล่าวได้ในส่วน Search User ของระบบ โดยค้นหาด้วย UserID: '+ userid+' หากตรวจสอบแล้วไม่ใช่คุณ กรุณาติดต่อผู้ดูแลระบบ'
+          res.render('error',{
+            title:'Error - LightUpTheProject',
+            ErrMessage: ErrMessage
+          });
         } else {
 
           boothsRef.doc(selectedBooth[0]).get() // Query Booth1
@@ -488,7 +495,7 @@ module.exports = function(app) {
                             });
                           }
 
-                          res.render('dev-regis',{
+                          res.render('register',{
                             title: 'Register - LightUpTheProject',
                             isRegisSuccess: true,
                             userid:userid,
