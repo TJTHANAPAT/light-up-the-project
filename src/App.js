@@ -1,15 +1,33 @@
-import React, {useContext} from 'react'
-import {CounterContext} from './store/CounterProvider'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom'
+
+import Home from './lightupssp2019/LightUp2019'
+import Homepage from './Homepage'
+import './style.css'
+import Admin from './admin/Admin'
 
 function App() {
-  const { counter, addCounter, subCounter } = useContext(CounterContext)
-  console.log(counter)
-  return(
-    <div>
-      <h1>{counter}</h1>
-      <button onClick={() => addCounter(1)}>Add</button>
-      <button onClick={() => subCounter(1)}>Sub</button>
-    </div>
+  return (
+    <Router>
+      <Switch>
+        <Route path='/admin'>
+          <Admin/>
+        </Route>
+        <Route path='/2019'>
+          <Home/>
+        </Route>
+        <Route exact path='/'>
+          <Homepage/>
+        </Route>
+        <Route path='/'>
+          <p>Opps! Page not found.</p>
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 
