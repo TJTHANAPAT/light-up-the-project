@@ -43,8 +43,11 @@ const Main = () => {
   } else if (!!user) {
     return (
       <div>
-        <p>Signed in as {user.displayName} ({user.email})</p>
+        <p>
+          Signed in as {user.displayName} ({user.email})
+        </p>
         <SignOutBtn />
+        <UserProfileSetting />
       </div>
     );
   } else {
@@ -230,6 +233,57 @@ const SignUpForm = () => {
       />
       <br />
       <button type="submit">Sign up</button>
+    </form>
+  );
+};
+
+function updateUserProfile(profile = { displayName: '' }) {
+  const auth = firebase.auth();
+  return new Promise((resolve, reject) => {
+    const user = auth.currentUser;
+    if (user) {
+      user.updateProfile(profile).then(() => {
+        console.log("Update user's profile successfully.");
+        resolve(user);
+      });
+    } else {
+      const err = 'There is no current user.';
+      reject(err);
+    }
+  });
+}
+
+const UserProfileSetting = () => {
+  const adminState = useContext(adminStore);
+  const { user } = adminState.state;
+  const [displayName, setDisplayName] = useState(user.displayName);
+  const handleChangeDisplayName = event => {
+    setDisplayName(event.target.value);
+  };
+  const updateUserDisplayName = event => {
+    event.preventDefault();
+    updateUserProfile({ displayName })
+      .then(user => {
+        alert('saved');
+        adminState.dispatch({ type: 'setUser', user: user });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+  return (
+    <form onSubmit={updateUserDisplayName}>
+      <label htmlFor="display_name">Change your display name: </label>
+      <br />
+      <input
+        type="text"
+        id="display_name"
+        name="displayName"
+        value={displayName}
+        onChange={handleChangeDisplayName}
+        required
+      />
+      <button type="submit">Save</button>
     </form>
   );
 };
