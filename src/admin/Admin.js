@@ -8,65 +8,10 @@ import { adminStore, AdminProvider } from './store';
 
 function checkAuthState() {
   const auth = firebase.auth();
-  return new Promise((resolve) => {
-    auth.onAuthStateChanged((user) => {
+  return new Promise(resolve => {
+    auth.onAuthStateChanged(user => {
       resolve(user);
     });
-  });
-}
-
-function signInWithEmailAndPassword(email, password) {
-  return new Promise((resolve, reject) => {
-    const auth = firebase.auth();
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        console.log('Signed in.');
-        resolve(response.user);
-      })
-      .catch((err) => {
-        reject(err.message);
-      });
-  });
-}
-
-function createNewAdmin(email, password, displayName) {
-  return new Promise((resolve, reject) => {
-    const auth = firebase.auth();
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        user.updateProfile({ displayName: displayName }).then(() => {
-          console.log('Create user suscessfully!');
-        });
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
-
-/**
- * Fetching configs.
- */
-function fetchData() {
-  const db = firebase.firestore();
-  const ref = db.collection('config');
-  return new Promise((resolve, reject) => {
-    ref
-      .get()
-      .then((querySnapshot) => {
-        let arr = [];
-        querySnapshot.forEach((doc) => {
-          arr.push(doc.data());
-        });
-        resolve(arr);
-      })
-      .catch((err) => {
-        console.error(err);
-        reject(err);
-      });
   });
 }
 
@@ -84,29 +29,32 @@ const Main = () => {
   const auth = firebase.auth();
   const { dispatch } = adminState;
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(user => {
       console.log('CurrentUser:', user);
       dispatch({ type: 'setUser', user: user });
-      setIsLoading(false)
+      setIsLoading(false);
     });
   }, []);
 
   const user = adminState.state.user;
 
-  if (isLoading){
-    return <p>Loading...</p>
+  if (isLoading) {
+    return <p>Loading...</p>;
   } else if (!!user) {
     return (
       <div>
-        <p>Signed in as {user.email}</p>
+        <p>Signed in as {user.displayName} ({user.email})</p>
         <SignOutBtn />
       </div>
     );
   } else {
     return (
       <div>
-        <p>Please sign in.</p>
+        <p>Please sign in</p>
         <SignInForm />
+        <br />
+        <p>or create a new accout</p>
+        <SignUpForm />
       </div>
     );
   }
@@ -123,152 +71,167 @@ const SignOutBtn = () => {
         console.log('Signed out.');
         dispatch({ type: 'setUser', user: null });
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err.message);
       });
   };
   return <button onClick={signOut}>Sign out</button>;
 };
 
+function signInWithEmailAndPassword(email, password) {
+  return new Promise((resolve, reject) => {
+    const auth = firebase.auth();
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        console.log('Signed in.');
+        resolve(response.user);
+      })
+      .catch(err => {
+        reject(err.message);
+      });
+  });
+}
+
 const SignInForm = () => {
-  const [loginState, setLoginState] = useState({ email: '', password: '' });
-  const handleChangeInput = (event) => {
-    setLoginState({ ...loginState, [event.target.id]: event.target.value });
+  const [formState, setFormState] = useState({ email: '', password: '' });
+  const handleChangeInput = event => {
+    setFormState({ ...formState, [event.target.name]: event.target.value });
   };
 
   const adminState = useContext(adminStore);
-  const signIn = (event) => {
+  const signIn = event => {
     event.preventDefault();
-    const { email, password } = loginState;
+    const { email, password } = formState;
     const { dispatch } = adminState;
     signInWithEmailAndPassword(email, password)
-      .then((user) => {
+      .then(user => {
         dispatch({ type: 'setUser', user: user });
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   };
 
   return (
     <form onSubmit={signIn}>
-      <label htmlFor="email">Email: </label>
+      <label htmlFor="signin_email">Email: </label>
       <input
         type="email"
-        id="email"
+        id="signin_email"
+        name="email"
         placeholder="example@mail.com"
-        value={loginState.email}
+        value={formState.email}
         onChange={handleChangeInput}
         required
       />
-      <label htmlFor="password">Password: </label>
+      <br />
+      <label htmlFor="signin_password">Password: </label>
       <input
         type="password"
-        id="password"
+        id="signin_password"
+        name="password"
         placeholder="password"
-        value={loginState.password}
+        value={formState.password}
         onChange={handleChangeInput}
         required
       />
+      <br />
       <button type="submit">Sign in</button>
     </form>
   );
 };
 
+function createNewUser(email, password, displayName) {
+  return new Promise((resolve, reject) => {
+    const auth = firebase.auth();
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
+        user.updateProfile({ displayName: displayName }).then(() => {
+          console.log('Create user suscessfully!');
+          resolve(user);
+        });
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+const SignUpForm = () => {
+  const [formState, setFormState] = useState({
+    email: '',
+    password: '',
+    name_first: '',
+    name_last: '',
+  });
+  const handleChangeInput = event => {
+    console.log(`${event.target.name}: ${event.target.value}`);
+    setFormState({ ...formState, [event.target.name]: event.target.value });
+  };
+  const adminState = useContext(adminStore);
+  const signUp = event => {
+    event.preventDefault();
+    const { dispatch } = adminState;
+    const { email, password, name_first, name_last } = formState;
+    const displayName = `${name_first} ${name_last}`;
+    createNewUser(email, password, displayName)
+      .then(user => {
+        dispatch({ type: 'setUser', user: user });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+  return (
+    <form onSubmit={signUp}>
+      <label htmlFor="signup_name_first">First Name: </label>
+      <input
+        type="text"
+        id="signup_name_first"
+        name="name_first"
+        placeholder="First Name"
+        value={formState.name_first}
+        onChange={handleChangeInput}
+        required
+      />
+      <label htmlFor="signup_name_last">Last Name: </label>
+      <input
+        type="text"
+        id="signup_name_last"
+        name="name_last"
+        placeholder="Last Name"
+        value={formState.name_last}
+        onChange={handleChangeInput}
+        required
+      />
+      <br />
+      <label htmlFor="signup_email">Email: </label>
+      <input
+        type="email"
+        id="signup_email"
+        name="email"
+        placeholder="example@mail.com"
+        value={formState.email}
+        onChange={handleChangeInput}
+        required
+      />
+      <label htmlFor="signup_password">Password: </label>
+      <input
+        type="password"
+        id="signup_password"
+        name="password"
+        placeholder="password"
+        value={formState.password}
+        onChange={handleChangeInput}
+        required
+      />
+      <br />
+      <button type="submit">Sign up</button>
+    </form>
+  );
+};
+
 export default Admin;
-
-// function Admin2() {
-//   const [user, setUser] = useState(null);
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [email, setEmail] = useState();
-//   const [password, setPassword] = useState();
-//   const [displayName, setDisplayName] = useState();
-
-//   const handleSignup = (e) => {
-//     e.preventDefault();
-//     console.log(email, password, displayName);
-//     createNewAdmin(email, password, displayName);
-//   };
-
-//   useEffect(async () => {
-//     const currentUser = await checkAuthState();
-//     console.log(user);
-//     if (!!user) {
-//       setDisplayName(displayName);
-//     }
-//     setUser(currentUser);
-//   });
-//   const EditProfilePanel = () => {
-//     if (!!user) {
-//       return (
-//         <form>
-//           <input
-//             type="text"
-//             id="displayName"
-//             value={displayName}
-//             onChange={(event) => {
-//               console.log(`displayName: ${event.target.value}`);
-//             }}
-//           />
-//         </form>
-//       );
-//     }
-//   };
-//   return (
-//     <div className="container-fluid">
-//       <h1>Admin</h1>
-//       <hr />
-//       <p>{!!user ? `Signed in with email ${user.email}` : 'Not signed in.'}</p>
-//       {EditProfilePanel()}
-//       <h2>Sign Up for Admin</h2>
-//       <form>
-//         <div className="mb-3">
-//           <label htmlFor="inputDisplayName" className="form-label">
-//             Display Name
-//           </label>
-//           <input
-//             type="text"
-//             className="form-control"
-//             id="inputDisplayName"
-//             onChange={(e) => {
-//               setDisplayName(e.target.value);
-//             }}
-//           />
-//         </div>
-//         <div className="mb-3">
-//           <label htmlFor="inputEmail" className="form-label">
-//             Email
-//           </label>
-//           <input
-//             type="email"
-//             className="form-control"
-//             id="inputEmail"
-//             onChange={(e) => {
-//               setEmail(e.target.value);
-//             }}
-//           />
-//         </div>
-//         <div className="mb-3">
-//           <label htmlFor="inputPassword" className="form-label">
-//             Password
-//           </label>
-//           <input
-//             type="password"
-//             className="form-control"
-//             id="inputPassword"
-//             onChange={(e) => {
-//               setPassword(e.target.value);
-//             }}
-//           />
-//         </div>
-//         <button
-//           type="submit"
-//           className="btn btn-primary"
-//           onClick={handleSignup}
-//         >
-//           Sign up
-//         </button>
-//       </form>
-//     </div>
-//   );
-// }
