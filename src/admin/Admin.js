@@ -1,100 +1,51 @@
-import React, { useState, useEffect, useContext } from 'react';
-
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
-
-import { adminStore, AdminProvider } from './store';
-
-function checkAuthState() {
-  const auth = firebase.auth();
-  return new Promise(resolve => {
-    auth.onAuthStateChanged(user => {
-      resolve(user);
-    });
-  });
-}
+import React, { useState } from 'react';
+import { AuthProvider, useAuth } from './authentication';
 
 const Admin = () => {
   return (
-    <AdminProvider>
+    <AuthProvider>
       <Main />
-    </AdminProvider>
+    </AuthProvider>
   );
 };
 
 const Main = () => {
-  const adminState = useContext(adminStore);
-  const [isLoading, setIsLoading] = useState(true);
-  const auth = firebase.auth();
-  const { dispatch } = adminState;
-  useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      console.log('CurrentUser:', user);
-      dispatch({ type: 'setUser', user: user });
-      setIsLoading(false);
-    });
-  }, []);
-
-  const user = adminState.state.user;
-
-  if (isLoading) {
+  const auth = useAuth();
+  console.log('Current User: ', auth.user);
+  if (auth.isConnecting) {
     return <p>Loading...</p>;
-  } else if (!!user) {
-    return (
-      <div>
-        <p>
-          Signed in as {user.displayName} ({user.email})
-        </p>
-        <SignOutBtn />
-        <UserProfileSetting />
-      </div>
-    );
   } else {
-    return (
-      <div>
-        <p>Please sign in</p>
-        <SignInForm />
-        <br />
-        <p>or create a new accout</p>
-        <SignUpForm />
-      </div>
-    );
+    return <>{!!auth.user ? <AdminPage /> : <SignInPage />}</>;
   }
 };
 
-const SignOutBtn = () => {
-  const adminState = useContext(adminStore);
-  const { dispatch } = adminState;
-  const signOut = () => {
-    const auth = firebase.auth();
-    auth
-      .signOut()
-      .then(() => {
-        console.log('Signed out.');
-        dispatch({ type: 'setUser', user: null });
-      })
-      .catch(err => {
-        console.error(err.message);
-      });
-  };
-  return <button onClick={signOut}>Sign out</button>;
+const AdminPage = () => {
+  const auth = useAuth();
+  return (
+    <>
+      <p>
+        Signed in as {auth.user.displayName} ({auth.user.email})
+      </p>
+      <SignOutBtn />
+      <UserProfileSetting />
+    </>
+  );
 };
 
-function signInWithEmailAndPassword(email, password) {
-  return new Promise((resolve, reject) => {
-    const auth = firebase.auth();
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(response => {
-        console.log('Signed in.');
-        resolve(response.user);
-      })
-      .catch(err => {
-        reject(err.message);
-      });
-  });
-}
+const SignInPage = () => {
+  return (
+    <>
+      <SignInForm />
+      <p>or create a new account.</p>
+      <SignUpForm />
+    </>
+  );
+};
+
+const SignOutBtn = () => {
+  const auth = useAuth();
+  return <button onClick={auth.signOut}>Sign out</button>;
+};
 
 const SignInForm = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
@@ -102,14 +53,14 @@ const SignInForm = () => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
 
-  const adminState = useContext(adminStore);
+  const auth = useAuth();
   const signIn = event => {
     event.preventDefault();
     const { email, password } = formState;
-    const { dispatch } = adminState;
-    signInWithEmailAndPassword(email, password)
+    auth
+      .signIn(email, password)
       .then(user => {
-        dispatch({ type: 'setUser', user: user });
+        console.log(`Signed In as ${user.displayName}`);
       })
       .catch(err => {
         console.error(err);
@@ -145,24 +96,6 @@ const SignInForm = () => {
   );
 };
 
-function createNewUser(email, password, displayName) {
-  return new Promise((resolve, reject) => {
-    const auth = firebase.auth();
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        const user = userCredential.user;
-        user.updateProfile({ displayName: displayName }).then(() => {
-          console.log('Create user suscessfully!');
-          resolve(user);
-        });
-      })
-      .catch(err => {
-        reject(err);
-      });
-  });
-}
-
 const SignUpForm = () => {
   const [formState, setFormState] = useState({
     email: '',
@@ -170,24 +103,27 @@ const SignUpForm = () => {
     name_first: '',
     name_last: '',
   });
+
   const handleChangeInput = event => {
     console.log(`${event.target.name}: ${event.target.value}`);
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
-  const adminState = useContext(adminStore);
+
+  const auth = useAuth();
   const signUp = event => {
     event.preventDefault();
-    const { dispatch } = adminState;
     const { email, password, name_first, name_last } = formState;
     const displayName = `${name_first} ${name_last}`;
-    createNewUser(email, password, displayName)
-      .then(user => {
-        dispatch({ type: 'setUser', user: user });
+    auth
+      .signUp(email, password, displayName)
+      .then(() => {
+        console.log('Created account successfully.');
       })
       .catch(err => {
-        console.error(err);
+        console.log(err);
       });
   };
+
   return (
     <form onSubmit={signUp}>
       <label htmlFor="signup_name_first">First Name: </label>
@@ -237,40 +173,25 @@ const SignUpForm = () => {
   );
 };
 
-function updateUserProfile(profile = { displayName: '' }) {
-  const auth = firebase.auth();
-  return new Promise((resolve, reject) => {
-    const user = auth.currentUser;
-    if (user) {
-      user.updateProfile(profile).then(() => {
-        console.log("Update user's profile successfully.");
-        resolve(user);
-      });
-    } else {
-      const err = 'There is no current user.';
-      reject(err);
-    }
-  });
-}
-
 const UserProfileSetting = () => {
-  const adminState = useContext(adminStore);
-  const { user } = adminState.state;
+  const auth = useAuth();
+  const { user } = auth;
   const [displayName, setDisplayName] = useState(user.displayName);
   const handleChangeDisplayName = event => {
     setDisplayName(event.target.value);
   };
   const updateUserDisplayName = event => {
     event.preventDefault();
-    updateUserProfile({ displayName })
-      .then(user => {
+    auth
+      .updateUserProfile({ displayName })
+      .then(() => {
         alert('saved');
-        adminState.dispatch({ type: 'setUser', user: user });
       })
       .catch(err => {
-        console.error(err);
+        console.error(err.message);
       });
   };
+
   return (
     <form onSubmit={updateUserDisplayName}>
       <label htmlFor="display_name">Change your display name: </label>
