@@ -16,7 +16,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
   const [user, setUser] = useState(null);
-  const [isConnecting, setConnecting] = useState(true);
+  const [isInitialConnecting, setInitialConnecting] = useState(true);
   const firebaseAuth = firebase.auth();
 
   const signIn = (email, password) => {
@@ -91,13 +91,13 @@ function useProvideAuth() {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       setUser(user);
-      setConnecting(false);
+      setInitialConnecting(false);
     });
     return () => unsubscribe();
   }, []);
 
   return {
-    isConnecting,
+    isInitialConnecting,
     user,
     signIn,
     signOut,

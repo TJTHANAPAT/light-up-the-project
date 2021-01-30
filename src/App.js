@@ -1,33 +1,27 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Home from './lightupssp2019/LightUp2019'
-import Homepage from './Homepage'
-import './style.css'
-import Admin from './admin/Admin'
+import Home from './lightupssp2019/LightUp2019';
+import Homepage from './Homepage';
+import './style.css';
+import Admin from './admin/Admin';
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Switch>
-        <Route path='/admin'>
-          <Admin/>
+        <Route path="/admin">
+          <Admin />
         </Route>
-        <Route path='/2019'>
-          <Home/>
+        <Route path="/2019">
+          <Home />
         </Route>
-        <Route exact path='/'>
-          <Homepage/>
+        <Route exact path="/">
+          <Homepage />
         </Route>
-        <Route path='/'>
+        <Route path="/">
           <p>Opps! Page not found.</p>
         </Route>
       </Switch>
     </Router>
-  )
+  );
 }
-
-export default App
