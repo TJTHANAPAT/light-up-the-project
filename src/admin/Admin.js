@@ -1,9 +1,4 @@
-import {
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import { AuthProvider, useAuth } from './auth/authentication';
 import SignUpForm from './auth/SignUpForm';
 import SignInForm from './auth/SignInForm';
@@ -34,15 +29,13 @@ const AdminConsole = () => {
   let match = useRouteMatch();
   return (
     <>
-      <p>
-        Signed in as {auth.user.displayName} ({auth.user.email})
-      </p>
-      <SignOutBtn />
+      <span>
+        Signed in as {auth.user.displayName} ({auth.user.email}) <SignOutBtn />
+      </span>
+      
       <ul>
-      <li>
-          <Link to={`${match.path}/`}>
-            Home
-          </Link>
+        <li>
+          <Link to={`${match.path}/`}>Home</Link>
         </li>
         <li>
           <Link to={`${match.path}/userprofile`}>User Profile Setting</Link>
