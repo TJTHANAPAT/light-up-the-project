@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 import firebase from 'firebase/app';
-import firebaseConfig from './firebaseConfig'
+import firebaseConfig from './firebase/firebaseConfig'
 firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
