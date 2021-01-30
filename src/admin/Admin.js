@@ -3,6 +3,7 @@ import SignUpForm from './auth/SignUpForm';
 import SignInForm from './auth/SignInForm';
 import SignOutBtn from './auth/SignOupBtn';
 import UserProfileSetting from './auth/UserProfileSetting';
+import BoothGroupConfig from './BoothGroupConfig';
 
 const Admin = () => {
   return (
@@ -30,7 +31,10 @@ const AdminPage = () => {
         Signed in as {auth.user.displayName} ({auth.user.email})
       </p>
       <SignOutBtn />
+
       <UserProfileSetting />
+      <hr/>
+      <BoothGroupConfig/>
     </>
   );
 };

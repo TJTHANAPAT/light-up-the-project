@@ -11,7 +11,7 @@ const UserProfileSetting = () => {
   const updateUserDisplayName = event => {
     event.preventDefault();
     auth
-      .updateUserProfile({ displayName })
+      .updateUserProfile({ displayName, admin: true })
       .then(() => {
         alert('saved');
       })

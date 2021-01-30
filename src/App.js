@@ -6,6 +6,7 @@ import './style.css';
 import Admin from './admin/Admin';
 
 export default function App() {
+  document.title = 'Light Up SSP'
   return (
     <Router>
       <Switch>
