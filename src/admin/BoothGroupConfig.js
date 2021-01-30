@@ -138,7 +138,9 @@ const BoothGroup = props => {
     toggleEditForm();
   }
   function deleteBoothGroup() {
-    onDelete(groupId);
+    if (window.confirm(`Are you sure to delete ${groupName} booth group (${groupId})?`)) {
+      onDelete(groupId);
+    }
   }
 
   return (

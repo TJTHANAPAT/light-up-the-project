@@ -75,7 +75,7 @@ function useProvideAuth() {
 
   const updateUserProfile = (profile = { displayName: '' }) => {
     return new Promise((resolve, reject) => {
-      user
+      firebaseAuth.currentUser
         .updateProfile(profile)
         .then(() => {
           setUser({ ...user, ...profile });
