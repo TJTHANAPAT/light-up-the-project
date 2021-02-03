@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Home from './lightupssp2019/LightUp2019';
+import Home2019 from './lightupssp2019/LightUp2019';
 import Homepage from './Homepage';
 import './style.css';
 import Admin from './admin/Admin';
@@ -14,7 +14,7 @@ export default function App() {
           <Admin />
         </Route>
         <Route path="/2019">
-          <Home />
+          <Home2019 />
         </Route>
         <Route exact path="/">
           <Homepage />
