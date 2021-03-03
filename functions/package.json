@@ -16,7 +16,7 @@
     "firebase-admin": "^8.6.1",
     "firebase-functions": "^3.0.2",
     "jade": "^1.11.0",
-    "pug": "^2.0.3"
+    "pug": "^3.0.1"
   },
   "devDependencies": {
     "eslint": "^5.15.3",
