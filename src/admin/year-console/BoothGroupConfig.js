@@ -1,29 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAdminStore } from '../adminStore';
 
-export default function BoothGroupConfig (props){
-
+export default function BoothGroupConfig(props) {
+  const adminStore = useAdminStore();
+  const yearId = props.yearId;
   const [boothGroups, setBoothGroups] = useState(props.boothGroups);
+
+  useEffect(() => {
+    adminStore.getBoothGroups(yearId).then(boothGroups => {
+      setBoothGroups(boothGroups);
+    });
+  }, [adminStore.boothGroupsStore])
 
   function deleteBoothGroup(groupId) {
     console.log(`Deleting group ${groupId}`);
-    for (let i = 0; i < boothGroups.length; i++) {
-      const boothGroup = boothGroups[i];
-      if (boothGroup.groupId === groupId) {
-        boothGroups.splice(i, 1);
-        break;
-      }
-    }
-    setBoothGroups([...boothGroups]);
+    adminStore
+      .boothGroup(yearId)
+      .remove(groupId)
+      .then(() => {
+        console.log(`Deleted group ${groupId} successfully.`);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
+
   function updateBoothGroup(boothGroup) {
-    console.log('Updating group', boothGroup.groupId);
-    for (let i = 0; i < boothGroups.length; i++) {
-      if (boothGroups[i].groupId === boothGroup.groupId) {
-        boothGroups[i] = boothGroup;
-        break;
-      }
-    }
-    setBoothGroups([...boothGroups]);
+    console.log(`Updating group ${boothGroup.groupId}`);
+    adminStore
+      .boothGroup(yearId)
+      .update(boothGroup)
+      .then(() => {
+        console.log(`Updated group ${boothGroup.groupId} successfully.`);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   const boothGroupNewBlank = {
@@ -52,9 +64,17 @@ export default function BoothGroupConfig (props){
       }
     }
     if (isBoothGroupNewIdValid) {
-      setBoothGroups([...boothGroups, boothGroupNew]);
-      setBoothGroupNew(boothGroupNewBlank);
-      alert('Adding new group successfully');
+      console.log(`Adding group ${boothGroupNew.groupId}`);
+      adminStore
+        .boothGroup(yearId)
+        .add(boothGroupNew)
+        .then(() => {
+          setBoothGroupNew(boothGroupNewBlank);
+          alert('Added new group successfully');
+        })
+        .catch(err => {
+          console.error(err);
+        });
     } else {
       alert('Please use another id. This id has already been used.');
     }
@@ -106,7 +126,7 @@ export default function BoothGroupConfig (props){
       </form>
     </>
   );
-};
+}
 
 const BoothGroup = props => {
   const { boothGroup, onDelete, onUpdate } = props;

@@ -40,7 +40,7 @@ export default function YearConsole() {
       <>
         <h1>{year.yearName}</h1>
         <p>Year Console (ID: {yearId})</p>
-        <BoothGroupConfig boothGroups={boothGroups}/>
+        <BoothGroupConfig yearId={yearId} boothGroups={boothGroups}/>
       </>
     );
   }

@@ -3,7 +3,6 @@ import { useAuth } from './auth/authentication';
 import { useAdminStore } from './adminStore';
 import SignOutBtn from './auth/SignOupBtn';
 import UserProfileSetting from './auth/UserProfileSetting';
-import BoothGroupConfig from './year-console/BoothGroupConfig';
 import YearConsole from './year-console/YearConsole';
 
 const AdminConsole = () => {

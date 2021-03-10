@@ -33,13 +33,13 @@ function useProvideAdminStore() {
   };
 
   const getBoothGroups = yearId => {
+    const db = firebase.firestore();
     return new Promise((resolve, reject) => {
-      console.log(boothGroupsStore)
+      console.log(boothGroupsStore);
       if (boothGroupsStore[yearId] !== undefined) {
         console.log('Get from state');
         resolve(boothGroupsStore[yearId]);
       } else {
-        const db = firebase.firestore();
         db.collection(`years/${yearId}/boothGroups`)
           .get()
           .then(querySnapshot => {
@@ -49,7 +49,7 @@ function useProvideAdminStore() {
             });
             console.log('Get from Firestore');
             boothGroupsStore[yearId] = queryBoothGroups;
-            setBoothGroupsStore({...boothGroupsStore})
+            setBoothGroupsStore({ ...boothGroupsStore });
             resolve(boothGroupsStore[yearId]);
           })
           .catch(err => {
@@ -75,7 +75,131 @@ function useProvideAdminStore() {
       });
   }, []);
 
-  return { currentYear, yearConfigs, isLoading, getYearConfig, getBoothGroups };
+  function boothGroup(yearId) {
+    const db = firebase.firestore();
+
+    const add = boothGroup => {
+      const boothGroupRef = db
+        .collection(`years/${yearId}/boothGroups`)
+        .doc(boothGroup.groupId);
+      return new Promise((resolve, reject) => {
+        boothGroupRef
+          .get()
+          .then(doc => {
+            if (doc.exists) {
+              const err = new Error(
+                `Cannot add booth group with ID ${boothGroup.groupId}. This ID is already taken by another booth group.`
+              );
+              console.error(err);
+              reject(err);
+            } else {
+              boothGroupRef
+                .set(boothGroup)
+                .then(() => {
+                  boothGroupsStore[yearId] = [
+                    ...boothGroupsStore[yearId],
+                    boothGroup,
+                  ];
+                  setBoothGroupsStore({ ...boothGroupsStore });
+                  console.log('Added new booth group successfully.');
+                  resolve();
+                })
+                .catch(err => {
+                  console.error(err);
+                });
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      });
+    };
+
+    const remove = groupId => {
+      const boothGroupRef = db
+        .collection(`years/${yearId}/boothGroups`)
+        .doc(groupId);
+      return new Promise((resolve, reject) => {
+        boothGroupRef
+          .delete()
+          .then(() => {
+            const boothGroups = boothGroupsStore[yearId];
+            for (let i = 0; i < boothGroups.length; i++) {
+              const boothGroup = boothGroups[i];
+              if (boothGroup.groupId === groupId) {
+                boothGroups.splice(i, 1);
+                break;
+              }
+            }
+            boothGroupsStore[yearId] = boothGroups;
+            setBoothGroupsStore({ ...boothGroupsStore });
+            console.log('Deleted booth group successfully.');
+            resolve();
+          })
+          .catch(err => {
+            console.error(err);
+            reject(err);
+          });
+      });
+    };
+
+    const update = boothGroup => {
+      const boothGroupRef = db
+        .collection(`years/${yearId}/boothGroups`)
+        .doc(boothGroup.groupId);
+      return new Promise((resolve, reject) => {
+        boothGroupRef
+          .get()
+          .then(doc => {
+            if (doc.exists) {
+              const updateBoothGroupData = {
+                groupName: boothGroup.groupName,
+                groupDescription: boothGroup.groupDescription,
+              };
+              boothGroupRef
+                .update(updateBoothGroupData)
+                .then(() => {
+                  const boothGroups = boothGroupsStore[yearId];
+                  for (let i = 0; i < boothGroups.length; i++) {
+                    if (boothGroups[i].groupId === boothGroup.groupId) {
+                      boothGroups[i] = boothGroup;
+                      break;
+                    }
+                  }
+                  boothGroupsStore[yearId] = boothGroups;
+                  setBoothGroupsStore({ ...boothGroupsStore });
+                  console.log('Updated booth group successfully.');
+                  resolve();
+                })
+                .catch(err => {
+                  console.error(err);
+                });
+            } else {
+              const err = new Error(
+                `Booth group with ID ${boothGroup.groupId} is not existed.`
+              );
+              console.error(err);
+              reject(err);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      });
+    };
+
+    return { add, remove, update };
+  }
+
+  return {
+    currentYear,
+    yearConfigs,
+    isLoading,
+    getYearConfig,
+    getBoothGroups,
+    boothGroup,
+    boothGroupsStore
+  };
 }
 
 function getSystemConfig() {
