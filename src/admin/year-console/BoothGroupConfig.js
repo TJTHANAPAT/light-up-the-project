@@ -1,25 +1,8 @@
 import React, { useState } from 'react';
 
-const BoothGroupConfig = () => {
-  const exampleBoothGroups = [
-    {
-      groupId: 'G01',
-      groupName: 'Medicine',
-      groupDescription: 'Medicine Description',
-    },
-    {
-      groupId: 'G02',
-      groupName: 'Engineering',
-      groupDescription: 'Engineering Description',
-    },
-    {
-      groupId: 'G03',
-      groupName: 'Science',
-      groupDescription: 'Science Description',
-    },
-  ];
+export default function BoothGroupConfig (props){
 
-  const [boothGroups, setBoothGroups] = useState(exampleBoothGroups);
+  const [boothGroups, setBoothGroups] = useState(props.boothGroups);
 
   function deleteBoothGroup(groupId) {
     console.log(`Deleting group ${groupId}`);
@@ -220,5 +203,3 @@ const EditBoothGroupForm = props => {
     </form>
   );
 };
-
-export default BoothGroupConfig;

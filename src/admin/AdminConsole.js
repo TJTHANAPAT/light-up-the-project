@@ -3,7 +3,8 @@ import { useAuth } from './auth/authentication';
 import { useAdminStore } from './adminStore';
 import SignOutBtn from './auth/SignOupBtn';
 import UserProfileSetting from './auth/UserProfileSetting';
-import BoothGroupConfig from './BoothGroupConfig';
+import BoothGroupConfig from './year-console/BoothGroupConfig';
+import YearConsole from './year-console/YearConsole';
 
 const AdminConsole = () => {
   const auth = useAuth();
@@ -28,8 +29,8 @@ const AdminConsole = () => {
         <Route path={`${match.path}/userprofile`} exact>
           <UserProfileSetting />
         </Route>
-        <Route path={`${match.path}/config/boothgroups/:yearId`}>
-          <BoothGroupConfig />
+        <Route path={`${match.path}/year/:yearId`} exact>
+          <YearConsole/>
         </Route>
         <Route path={`${match.path}`} exact>
           <h1>Admin Console</h1>
@@ -60,8 +61,8 @@ const YearSelector = () => {
             <h4>{year.yearName}</h4>
             <span>ID: {year.yearId}</span>
             <br />
-            <Link to={`${match.path}/config/boothgroups/${year.yearId}`}>
-              Config Booth Groups
+            <Link to={`${match.path}/year/${year.yearId}`}>
+              Go to year console
             </Link>
             <br />
             <br />

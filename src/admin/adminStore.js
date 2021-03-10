@@ -18,8 +18,10 @@ function useProvideAdminStore() {
   const [currentYear, setCurrentYear] = useState(null);
   const [yearConfigs, setYearConfigs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [boothGroupsStore, setBoothGroupsStore] = useState({});
 
   const getYearConfig = yearId => {
+    console.log('Call getYearConfig');
     let config = null;
     for (let i = 0; i < yearConfigs.length; i++) {
       if (yearConfigs[i].yearId === yearId) {
@@ -31,20 +33,29 @@ function useProvideAdminStore() {
   };
 
   const getBoothGroups = yearId => {
-    const db = firebase.firestore();
     return new Promise((resolve, reject) => {
-      db.collection(`years/${yearId}/boothGroups`)
-        .get()
-        .then(querySnapshot => {
-          let boothGroups = [];
-          querySnapshot.forEach(doc => {
-            boothGroups.push(doc.data());
+      console.log(boothGroupsStore)
+      if (boothGroupsStore[yearId] !== undefined) {
+        console.log('Get from state');
+        resolve(boothGroupsStore[yearId]);
+      } else {
+        const db = firebase.firestore();
+        db.collection(`years/${yearId}/boothGroups`)
+          .get()
+          .then(querySnapshot => {
+            let queryBoothGroups = [];
+            querySnapshot.forEach(doc => {
+              queryBoothGroups.push(doc.data());
+            });
+            console.log('Get from Firestore');
+            boothGroupsStore[yearId] = queryBoothGroups;
+            setBoothGroupsStore({...boothGroupsStore})
+            resolve(boothGroupsStore[yearId]);
+          })
+          .catch(err => {
+            reject(err);
           });
-          resolve(boothGroups);
-        })
-        .catch(err => {
-          reject(err);
-        });
+      }
     });
   };
 

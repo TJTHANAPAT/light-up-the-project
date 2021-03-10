@@ -31,4 +31,5 @@ firebase-debug.log*
 firebase-debug.*.log*
 firestore-debug.log*
 /firebaseEmulators
+run_firebase_emulator.bat
 ui-debug.log
