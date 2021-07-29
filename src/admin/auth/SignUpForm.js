@@ -1,5 +1,20 @@
 import React, { useState } from 'react';
 import { useAuth } from './authentication';
+import { useHistory } from 'react-router';
+
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '100%',
+    },
+  },
+}));
 
 const SignUpForm = () => {
   const [formState, setFormState] = useState({
@@ -15,6 +30,8 @@ const SignUpForm = () => {
   };
 
   const auth = useAuth();
+  const history = useHistory();
+
   const signUp = event => {
     event.preventDefault();
     const { email, password, name_first, name_last } = formState;
@@ -22,6 +39,7 @@ const SignUpForm = () => {
     auth
       .signUp(email, password, displayName)
       .then(() => {
+        history.replace({ pathname: '/admin' });
         console.log('Created account successfully.');
       })
       .catch(err => {
@@ -29,51 +47,54 @@ const SignUpForm = () => {
       });
   };
 
+  const classes = useStyles();
+
   return (
-    <form onSubmit={signUp}>
-      <label htmlFor="signup_name_first">First Name: </label>
-      <input
-        type="text"
-        id="signup_name_first"
-        name="name_first"
-        placeholder="First Name"
-        value={formState.name_first}
-        onChange={handleChangeInput}
-        required
-      />
-      <label htmlFor="signup_name_last">Last Name: </label>
-      <input
-        type="text"
-        id="signup_name_last"
-        name="name_last"
-        placeholder="Last Name"
-        value={formState.name_last}
-        onChange={handleChangeInput}
-        required
-      />
-      <br />
-      <label htmlFor="signup_email">Email: </label>
-      <input
-        type="email"
-        id="signup_email"
-        name="email"
-        placeholder="example@mail.com"
-        value={formState.email}
-        onChange={handleChangeInput}
-        required
-      />
-      <label htmlFor="signup_password">Password: </label>
-      <input
-        type="password"
-        id="signup_password"
-        name="password"
-        placeholder="password"
-        value={formState.password}
-        onChange={handleChangeInput}
-        required
-      />
-      <br />
-      <button type="submit">Sign up</button>
+    <form onSubmit={signUp} className={classes.root}>
+      <Box mt={2} display="flex" flexDirection="column" alignItems="center">
+        <TextField
+          type="text"
+          name="name_first"
+          value={formState.name_first}
+          onChange={handleChangeInput}
+          required
+          label="First Name"
+        />
+        <TextField
+          type="text"
+          name="name_last"
+          value={formState.name_last}
+          onChange={handleChangeInput}
+          required
+          label="Last Name"
+        />
+        <TextField
+          type="email"
+          name="email"
+          value={formState.email}
+          onChange={handleChangeInput}
+          required
+          label="Email"
+        />
+        <TextField
+          type="password"
+          name="password"
+          value={formState.password}
+          onChange={handleChangeInput}
+          required
+          label="Password"
+        />
+      </Box>
+      <Box mt={4}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disableElevation
+        >
+          Sign Up
+        </Button>
+      </Box>
     </form>
   );
 };

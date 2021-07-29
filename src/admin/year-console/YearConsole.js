@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAdminStore } from '../adminStore';
+import Loading from '../components/Loading';
 import BoothGroupConfig from './BoothGroupConfig';
 
 export default function YearConsole() {
@@ -32,9 +33,9 @@ export default function YearConsole() {
   }, [adminStore.isLoading, year]);
 
   if (adminStore.isLoading || isLoadingYear || (!!year && isLoadingBoothGroups)) {
-    return <p>Loading...</p>;
+    return <Loading/>;
   } else if (!year) {
-    return <p>Sorry there's no year {yearId} in database.</p>;
+    return <p>Sorry, there's no year {yearId} in database.</p>;
   } else {
     return (
       <>

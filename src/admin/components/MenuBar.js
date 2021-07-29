@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from './auth/authentication';
+import { useAuth } from '../auth/authentication';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
   },
+  appBar: {
+    boxShadow: 'none',
+  },
   menuButton: {
     marginRight: theme.spacing(3),
   },
@@ -30,7 +33,7 @@ export default function MenuBar() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -79,7 +82,7 @@ export default function MenuBar() {
             </Button>
           </Hidden>
           <Hidden xsDown>
-            <Button color="inherit" onClick={auth.signOut}>
+            <Button color="inherit" onClick={auth.signOut} startIcon={<ExitToAppIcon />}>
               Sign Out
             </Button>
           </Hidden>

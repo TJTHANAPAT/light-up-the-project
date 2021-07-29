@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Home2019 from './lightupssp2019/LightUp2019';
 import Homepage from './Homepage';
-import './style.css';
 import Admin from './admin/Admin';
+import Home2019 from './lightupssp2019/LightUp2019';
+
+import './style.css';
 import CustomMuiTheme from './CustomTheme';
 
 export default function App() {
