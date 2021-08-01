@@ -6,12 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '100%',
     },
   },
 }));
@@ -23,7 +23,7 @@ const SignUpForm = () => {
     name_first: '',
     name_last: '',
   });
-
+  const [formError, setFormError] = useState(null)
   const handleChangeInput = event => {
     console.log(`${event.target.name}: ${event.target.value}`);
     setFormState({ ...formState, [event.target.name]: event.target.value });
@@ -44,6 +44,7 @@ const SignUpForm = () => {
       })
       .catch(err => {
         console.log(err);
+        setFormError(err.message)
       });
   };
 
@@ -59,6 +60,7 @@ const SignUpForm = () => {
           onChange={handleChangeInput}
           required
           label="First Name"
+          fullWidth
         />
         <TextField
           type="text"
@@ -67,6 +69,7 @@ const SignUpForm = () => {
           onChange={handleChangeInput}
           required
           label="Last Name"
+          fullWidth
         />
         <TextField
           type="email"
@@ -75,6 +78,7 @@ const SignUpForm = () => {
           onChange={handleChangeInput}
           required
           label="Email"
+          fullWidth
         />
         <TextField
           type="password"
@@ -83,6 +87,7 @@ const SignUpForm = () => {
           onChange={handleChangeInput}
           required
           label="Password"
+          fullWidth
         />
       </Box>
       <Box mt={4}>
@@ -94,6 +99,9 @@ const SignUpForm = () => {
         >
           Sign Up
         </Button>
+      </Box>
+      <Box mt={2}>
+        <Typography variant="body2" color="error">{formError}</Typography>
       </Box>
     </form>
   );
