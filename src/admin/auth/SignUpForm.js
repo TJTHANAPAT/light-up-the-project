@@ -23,7 +23,7 @@ const SignUpForm = () => {
     name_first: '',
     name_last: '',
   });
-  const [formError, setFormError] = useState(null)
+  const [formError, setFormError] = useState(null);
   const handleChangeInput = event => {
     console.log(`${event.target.name}: ${event.target.value}`);
     setFormState({ ...formState, [event.target.name]: event.target.value });
@@ -44,7 +44,7 @@ const SignUpForm = () => {
       })
       .catch(err => {
         console.log(err);
-        setFormError(err.message)
+        setFormError(err.message);
       });
   };
 
@@ -101,7 +101,9 @@ const SignUpForm = () => {
         </Button>
       </Box>
       <Box mt={2}>
-        <Typography variant="body2" color="error">{formError}</Typography>
+        <Typography variant="body2" color="error">
+          {formError}
+        </Typography>
       </Box>
     </form>
   );

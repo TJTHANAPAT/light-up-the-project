@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignInForm() {
   const [formState, setFormState] = useState({ email: '', password: '' });
-  const [formError, setFormError] = useState(null)
+  const [formError, setFormError] = useState(null);
   const handleChangeInput = event => {
     setFormState({ ...formState, [event.target.name]: event.target.value });
   };
@@ -35,11 +35,11 @@ export default function SignInForm() {
       .signIn(email, password)
       .then(user => {
         console.log(`Signed In as ${user.displayName}`);
-        history.replace({ pathname: "/admin" });
+        history.replace({ pathname: '/admin' });
       })
       .catch(err => {
         console.error(err);
-        setFormError(err.message)
+        setFormError(err.message);
       });
   };
 
@@ -78,7 +78,9 @@ export default function SignInForm() {
         </Button>
       </Box>
       <Box mt={2}>
-        <Typography variant="body2" color="error">{formError}</Typography>
+        <Typography variant="body2" color="error">
+          {formError}
+        </Typography>
       </Box>
     </form>
   );
