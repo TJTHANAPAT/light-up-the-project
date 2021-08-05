@@ -8,7 +8,7 @@ import './style.css';
 import CustomMuiTheme from './CustomTheme';
 
 export default function App() {
-  document.title = 'Light Up SSP';
+  document.title = 'LightUpSSP';
   return (
     <CustomMuiTheme>
       <Router>

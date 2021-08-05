@@ -1,5 +1,5 @@
 import { AuthProvider, useAuth } from './auth/authentication';
-import { AdminStoreProvider } from './adminStore';
+import { AdminStoreProvider } from './store/store';
 import AdminConsole from './AdminConsole';
 import SignInPage from './auth/SignInPage';
 import LoadingCover from './components/LoadingCover';
@@ -33,6 +33,26 @@ const AdminRoute = ({ children, ...rest }) => {
   );
 };
 
+const SignInRoute = ({ children, ...rest }) => {
+  const auth = useAuth();
+  return (
+    <Route
+      {...rest}
+      render={() =>
+        auth.user ? (
+          <Redirect
+            to={{
+              pathname: '/admin',
+            }}
+          />
+        ) : (
+          children
+        )
+      }
+    />
+  );
+};
+
 const Main = () => {
   const auth = useAuth();
   if (auth.isInitialConnecting) {
@@ -41,9 +61,9 @@ const Main = () => {
     console.log('Current User: ', auth.user);
     return (
       <Switch>
-        <Route exact path="/admin/signin">
+        <SignInRoute exact path="/admin/signin">
           <SignInPage />
-        </Route>
+        </SignInRoute>
 
         <AdminRoute path="/admin">
           <AdminStoreProvider>
